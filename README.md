@@ -40,64 +40,56 @@ The following diagram illustrates the complete end-to-end architecture of the Pa
 
 ```mermaid
 graph TD
-    subgraph Azure ["☁️ Microsoft Azure VM (Ubuntu Server 22.04/24.04 LTS)"]
-        direction TB
+    subgraph Azure ["Microsoft Azure VM (Ubuntu Server)"]
         
-        subgraph WebLayer ["🌐 Web & Admin Panel (FastAPI)"]
-            FastAPI["FastAPI Application <br> (/admin dashboard)"]
-            Gateway["Click Redirect Gateway <br> (/r/{listing_id})"]
+        subgraph Web ["Web & Admin Panel"]
+            FastAPI["FastAPI Application"]
+            Gateway["Click Redirect Gateway"]
         end
 
-        subgraph BotLayer ["🤖 Telegram Bot Layer (aiogram 3)"]
+        subgraph Bot ["Telegram Bot Layer"]
             Aiogram["Aiogram 3 Bot Core"]
             FSM["FSM Filter Manager"]
             Topics["Forum Topics Automator"]
         end
 
-        subgraph EngineLayer ["⚙️ Core Engine & Background Processing"]
-            Scheduler["APScheduler <br> (Cron & Interval Jobs)"]
-            Arbitrage["Arbitrage Calculator <br> (Net Profit, Akcyza, Logistics)"]
+        subgraph Engine ["Core Engine"]
+            Scheduler["APScheduler"]
+            Arbitrage["Arbitrage Calculator"]
         end
 
-        subgraph ScraperLayer ["🕷️ Pan-European Scrapers & Anti-Bot Matrix"]
-            ProxyPool["Intelligent Proxy Pool <br> (100-1000+ proxies, Rotation)"]
-            Tier1["Tier 1 (Simple HTML): <br> SS.com, Bazos.sk, Bazos.cz"]
-            Tier2["Tier 2 (Moderate): <br> Autoplius.lt, Sauto.cz"]
-            Tier3["Tier 3 (Aggressive Protection): <br> Mobile.de, Kleinanzeigen, Leboncoin, Subito (curl_cffi Chrome TLS)"]
-            Otomoto["Otomoto.pl Benchmark <br> (Median Price Generator)"]
+        subgraph Scrapers ["Pan-European Scrapers & Anti-Bot"]
+            ProxyPool["Intelligent Proxy Pool"]
+            Tier1["Tier 1: SS.com, Bazos.sk, Bazos.cz"]
+            Tier2["Tier 2: Autoplius.lt, Sauto.cz"]
+            Tier3["Tier 3: Mobile.de, Kleinanzeigen, Leboncoin, Subito"]
+            Otomoto["Otomoto.pl Benchmark"]
         end
 
-        subgraph DBLayer ["🗄️ Persistence Layer"]
-            SQLite[("aiosqlite Database <br> (WAL Mode: car_arbitrage.db)")]
-        end
+        Database[("aiosqlite Database (WAL Mode)")]
     end
 
-    %% External Systems & Users
-    ExternalPortals["🌍 External Schengen Classifieds"] --> ProxyPool
-    ProxyPool --> Tier1 & Tier2 & Tier3 & Otomoto
+    External["External Schengen Classifieds"] --> ProxyPool
+    ProxyPool --> Tier1
+    ProxyPool --> Tier2
+    ProxyPool --> Tier3
+    ProxyPool --> Otomoto
     
-    %% Internal Connections
-    Scheduler --> ScraperLayer
-    Tier1 & Tier2 & Tier3 --> Arbitrage
+    Scheduler --> Scrapers
+    Tier1 --> Arbitrage
+    Tier2 --> Arbitrage
+    Tier3 --> Arbitrage
     Otomoto --> Arbitrage
-    Arbitrage --> SQLite
     
-    FastAPI --> SQLite
-    Aiogram --> SQLite
+    Arbitrage --> Database
+    FastAPI --> Database
+    Aiogram --> Database
     FSM --> Topics
     
     Arbitrage --> Aiogram
-    Aiogram --> TGGroup["📱 Telegram Supergroup <br> (Dynamic & Static Forum Topics)"]
-    
-    FastAPI --> AdminBrowser["💻 Admin Browser <br> (Chart.js Analytics & Proxies)"]
-    Gateway --> UserClicks["🔗 Affiliate / Sponsor Redirects"]
-
-    style Azure fill:#0d1117,stroke:#30363d,stroke-width:2px,color:#ffffff
-    style SQLite fill:#161b22,stroke:#f0b429,stroke-width:2px,color:#ffffff
-    style ScraperLayer fill:#1f2428,stroke:#58a6ff,stroke-width:1px,color:#ffffff
-    style EngineLayer fill:#1f2428,stroke:#3fb950,stroke-width:1px,color:#ffffff
-    style BotLayer fill:#1f2428,stroke:#a371f7,stroke-width:1px,color:#ffffff
-    style WebLayer fill:#1f2428,stroke:#f78166,stroke-width:1px,color:#ffffff
+    Aiogram --> TelegramGroup["Telegram Supergroup (Forum Topics)"]
+    FastAPI --> AdminPanel["Admin Browser (Dashboard & Proxies)"]
+    Gateway --> UserClicks["Affiliate & Sponsor Redirects"]
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
