@@ -1,18 +1,20 @@
-🚗 DoogagAuto Bot: Access and Testing Guide
+---
+
+# 🚗 DoogagAuto Bot: Access and Testing Guide
+
 Want to test our real-time Schengen car arbitrage scanner? Follow these simple steps to find and launch the bot on Telegram:
 
-Open Telegram: Launch the Telegram app on your mobile device or desktop.
+1. **Open Telegram:** Launch the Telegram app on your mobile device or desktop.
+2. **Search for the Bot:** Type `@doogagauto_bot` into the global search bar (or use the direct link provided by the administrator).
+3. **Initialize the Bot:** Open the chat window and click the **Start** button (or type `/start`) to activate the system.
+4. **Set Up Your First Filter:** Use the interactive menu or the `/newfilter` command to choose your preferred car make, model, year range, budget, and target Schengen countries.
+5. **Get Live Alerts:** Watch as the system matches foreign listings and delivers high-margin deals and *Hot Deals* directly to your chat or group topics! 🚀
 
-Search for the Bot: Type @doogagauto_bot into the global search bar (or use the direct link provided by the administrator).
+---
 
-Initialize the Bot: Open the chat window and click the Start button (or type /start) to activate the system.
+# 🛠️ DoogagAuto Engine: High-Performance Pan-European Arbitrage & Anti-Bot Architecture
 
-Set Up Your First Filter: Use the interactive menu or the /newfilter command to choose your preferred car make, model, year range, budget, and target Schengen countries.
-
-Get Live Alerts: Watch as the system matches foreign listings and delivers high-margin deals and Hot Deals directly to your chat or group topics! 🚀
-
-🛠️ DoogagAuto Engine: High-Performance Pan-European Arbitrage & Anti-Bot Architecture
-Enterprise-grade, asynchronous Schengen car arbitrage, web scraper, and real-time notification platform.
+**Enterprise-grade, asynchronous Schengen car arbitrage, web scraper, and real-time notification platform.**
 
 The system continuously monitors automotive portals across 7+ European countries, detects local price anomalies, calculates customs, excise, and logistics expenses, and delivers them to users via Telegram Supergroup Topics / Web Gateway.
 
