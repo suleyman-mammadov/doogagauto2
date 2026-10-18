@@ -89,14 +89,10 @@ graph TD
     Arbitrage --> Aiogram
     Aiogram --> TelegramGroup["Telegram Supergroup (Forum Topics)"]
     FastAPI --> AdminPanel["Admin Browser (Dashboard & Proxies)"]
-    Gateway --> UserClicks["Affiliate & Sponsor Redirects"]
+    Gateway --> UserClicks["Affiliate & Sponsor Redirects"] ```
 
-
+## 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
----
 
 ## 🧰 2. Technology Stack & Libraries
 
