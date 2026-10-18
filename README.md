@@ -34,22 +34,70 @@ The system continuously monitors automotive portals across 7+ European countries
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## 🏗️ Detailed System Architecture & Azure Infrastructure
+
+The following diagram illustrates the complete end-to-end architecture of the Pan-European Car Arbitrage and Live Scanner system running 24/7 on **Microsoft Azure Cloud**.
+
 ```mermaid
 graph TD
-    subgraph Azure Cloud [Microsoft Azure VM / Ubuntu Server]
+    subgraph Azure ["☁️ Microsoft Azure VM (Ubuntu Server 22.04/24.04 LTS)"]
         direction TB
-        FA[FastAPI Server <br> Admin Panel & Web UI] --> DB[(aiosqlite Database <br> car_arbitrage.db WAL Mode)]
-        BOT[Aiogram 3 Bot <br> Telegram Supergroup] --> DB
-        ENG[Arbitrage Engine <br> Multi-Platform Scrapers] --> DB
-        SCH[APScheduler <br> Background Cron Jobs] --> ENG
+        
+        subgraph WebLayer ["🌐 Web & Admin Panel (FastAPI)"]
+            FastAPI["FastAPI Application <br> (/admin dashboard)"]
+            Gateway["Click Redirect Gateway <br> (/r/{listing_id})"]
+        end
+
+        subgraph BotLayer ["🤖 Telegram Bot Layer (aiogram 3)"]
+            Aiogram["Aiogram 3 Bot Core"]
+            FSM["FSM Filter Manager"]
+            Topics["Forum Topics Automator"]
+        end
+
+        subgraph EngineLayer ["⚙️ Core Engine & Background Processing"]
+            Scheduler["APScheduler <br> (Cron & Interval Jobs)"]
+            Arbitrage["Arbitrage Calculator <br> (Net Profit, Akcyza, Logistics)"]
+        end
+
+        subgraph ScraperLayer ["🕷️ Pan-European Scrapers & Anti-Bot Matrix"]
+            ProxyPool["Intelligent Proxy Pool <br> (100-1000+ proxies, Rotation)"]
+            Tier1["Tier 1 (Simple HTML): <br> SS.com, Bazos.sk, Bazos.cz"]
+            Tier2["Tier 2 (Moderate): <br> Autoplius.lt, Sauto.cz"]
+            Tier3["Tier 3 (Aggressive Protection): <br> Mobile.de, Kleinanzeigen, Leboncoin, Subito (curl_cffi Chrome TLS)"]
+            Otomoto["Otomoto.pl Benchmark <br> (Median Price Generator)"]
+        end
+
+        subgraph DBLayer ["🗄️ Persistence Layer"]
+            SQLite[("aiosqlite Database <br> (WAL Mode: car_arbitrage.db)")]
+        end
     end
 
-    ENG -->|Proxy Pool & curl_cffi TLS 1.3| EXT[Şengen Platformaları <br> Mobile.de, SS.com, Otomoto.pl]
-    BOT -->|Forum Topics & Hot Deals| TG[Telegram İstifadəçiləri / Qrup]
-    FA -->|Web Dashboard & Gateway| USR[Admin Brauzeri]
+    %% External Systems & Users
+    ExternalPortals["🌍 External Schengen Classifieds"] --> ProxyPool
+    ProxyPool --> Tier1 & Tier2 & Tier3 & Otomoto
+    
+    %% Internal Connections
+    Scheduler --> ScraperLayer
+    Tier1 & Tier2 & Tier3 --> Arbitrage
+    Otomoto --> Arbitrage
+    Arbitrage --> SQLite
+    
+    FastAPI --> SQLite
+    Aiogram --> SQLite
+    FSM --> Topics
+    
+    Arbitrage --> Aiogram
+    Aiogram --> TGGroup["📱 Telegram Supergroup <br> (Dynamic & Static Forum Topics)"]
+    
+    FastAPI --> AdminBrowser["💻 Admin Browser <br> (Chart.js Analytics & Proxies)"]
+    Gateway --> UserClicks["🔗 Affiliate / Sponsor Redirects"]
 
-    style Azure Cloud fill:#1e1e2f,stroke:#007acc,stroke-width:2px,color:#ffffff
-    style DB fill:#2d2d30,stroke:#f1e05a,stroke-width:2px,color:#ffffff
+    style Azure fill:#0d1117,stroke:#30363d,stroke-width:2px,color:#ffffff
+    style SQLite fill:#161b22,stroke:#f0b429,stroke-width:2px,color:#ffffff
+    style ScraperLayer fill:#1f2428,stroke:#58a6ff,stroke-width:1px,color:#ffffff
+    style EngineLayer fill:#1f2428,stroke:#3fb950,stroke-width:1px,color:#ffffff
+    style BotLayer fill:#1f2428,stroke:#a371f7,stroke-width:1px,color:#ffffff
+    style WebLayer fill:#1f2428,stroke:#f78166,stroke-width:1px,color:#ffffff
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
