@@ -2,7 +2,7 @@
 
 # 🚗 DoogagAuto Bot: Access and Testing Guide
 
-Want to test our real-time Schengen car arbitrage scanner? Follow these simple steps to find and launch the bot on Telegram:
+Want to test our real-time Schengen car arbitrage scanner? Follow these simple steps to find and launch the bot on Telegram
 
 1. **Open Telegram:** Launch the Telegram app on your mobile device or desktop.
 2. **Search for the Bot:** Type `@doogagauto_bot` into the global search bar (or use the direct link provided by the administrator).
