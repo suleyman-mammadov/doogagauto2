@@ -181,7 +181,7 @@ The system is fully integrated with Telegram's **Forum Topics** technology:
 
 ## 💻 7. Web Admin Panel & Monetization Gateway
 
-Browser-based management center (`http://<azure-ip>:8000/admin`):
+Browser-based management center (`http://<azure-ip>:port/subfolder`):
 1. **Dashboard:** Active users, live listing streams, clicks, and earnings charts (Chart.js).
 2. **Monetization & Sponsor:** Ability to append sponsor text, partner call-to-action buttons, and internal redirect links (`/r/{listing_id}`) to listing cards.
 3. **Broadcaster:** Anti-Flood algorithm with randomized jitters to safely broadcast notifications to all topics or users.
