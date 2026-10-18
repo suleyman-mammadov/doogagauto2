@@ -34,22 +34,22 @@ The system continuously monitors automotive portals across 7+ European countries
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  [ Microsoft Azure VM (Ubuntu Server) ]
-                                            │
-     ┌──────────────────────────────────────┼──────────────────────────────────────┐
-     ▼                                      ▼                                      ▼
-┌──────────────────┐                  ┌──────────────────┐                   ┌──────────────────┐
-│  FastAPI Server  │                  │ Arbitrage Engine │                   │  Aiogram 3 Bot   │
-│ (Admin & Web-UI) │                  │  (Scraper Pool)  │                   │ (Telegram Forum) │
-└────────┬─────────┘                  └────────┬─────────┘                   └────────┬─────────┘
-│                                     │                                      │
-│   [ HTTP/2 + Chrome Impersonation ] │                                      │
-│◄────────────────────────────────────┘                                      │
-▼                                                                            ▼
-┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                     aiosqlite Database (WAL Mode: car_arbitrage.db)                           │
-│  - seen_listings  - user_filters  - proxy_pool  - market_benchmarks  - ad_clicks              │
-└───────────────────────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph Azure Cloud [Microsoft Azure VM / Ubuntu Server]
+        direction TB
+        FA[FastAPI Server <br> Admin Panel & Web UI] --> DB[(aiosqlite Database <br> car_arbitrage.db WAL Mode)]
+        BOT[Aiogram 3 Bot <br> Telegram Supergroup] --> DB
+        ENG[Arbitrage Engine <br> Multi-Platform Scrapers] --> DB
+        SCH[APScheduler <br> Background Cron Jobs] --> ENG
+    end
+
+    ENG -->|Proxy Pool & curl_cffi TLS 1.3| EXT[Şengen Platformaları <br> Mobile.de, SS.com, Otomoto.pl]
+    BOT -->|Forum Topics & Hot Deals| TG[Telegram İstifadəçiləri / Qrup]
+    FA -->|Web Dashboard & Gateway| USR[Admin Brauzeri]
+
+    style Azure Cloud fill:#1e1e2f,stroke:#007acc,stroke-width:2px,color:#ffffff
+    style DB fill:#2d2d30,stroke:#f1e05a,stroke-width:2px,color:#ffffff
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
